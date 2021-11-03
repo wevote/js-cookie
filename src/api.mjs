@@ -3,6 +3,13 @@ import assign from './assign.mjs'
 import defaultConverter from './converter.mjs'
 
 function init (converter, defaultAttributes) {
+  function isIOS () {
+    const { cordova } = window;
+    if (!cordova) return false;
+    const { platform } = window.device || '';
+    return platform === 'iOS';
+  }
+
   function set (name, value, attributes) {
     if (typeof document === 'undefined') {
       return
@@ -43,11 +50,29 @@ function init (converter, defaultAttributes) {
       stringifiedAttributes += '=' + attributes[attributeName].split(';')[0]
     }
 
-    return (document.cookie =
-      name + '=' + converter.write(value, name) + stringifiedAttributes)
+    if (isIOS()) {
+      // 1/2/21 1pm, for the first pass just make all cookies session cookies without manual expiration
+      if (['voter_device_id'].includes(name)) {
+        window.localStorage.setItem(name, value);     // Persists between sessions
+      } else {
+        window.sessionStorage.setItem(name, value);
+      }
+    } else {
+      return (document.cookie =
+        name + '=' + converter.write(value, name) + stringifiedAttributes)
+    }
   }
 
   function get (name) {
+    if (isIOS()) {
+      // 1/2/21 1pm, for the first pass just make all cookies session cookies without manual expiration
+      if (['voter_device_id'].includes(name)) {
+        return window.localStorage.getItem(name);
+      } else {
+        return window.sessionStorage.getItem(name);
+      }
+    }
+
     if (typeof document === 'undefined' || (arguments.length && !name)) {
       return
     }
@@ -78,13 +103,22 @@ function init (converter, defaultAttributes) {
       set: set,
       get: get,
       remove: function (name, attributes) {
-        set(
-          name,
-          '',
-          assign({}, attributes, {
-            expires: -1
-          })
-        )
+        if (isIOS()) {
+          // This is over simplistic, would not handle the case of two cookies with different domains
+          if (['voter_device_id'].includes(name)) {
+            window.localStorage.removeItem(name);
+          } else {
+            window.sessionStorage.removeItem(name);
+          }
+        } else {
+          set(
+            name,
+            '',
+            assign({}, attributes, {
+              expires: -1
+            })
+          )
+        }
       },
       withAttributes: function (attributes) {
         return init(this.converter, assign({}, this.attributes, attributes))
