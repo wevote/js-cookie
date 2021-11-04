@@ -1,1 +1,1 @@
-module.exports = require('./dist/js.cookie')
+module.exports = require('./src/Cookie.js')
