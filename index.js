@@ -1,3 +1,3 @@
-module.exports = require('./Cookie.js')
-module.exports = require('./assign.js')
-module.exports = require('./converter.js')
+module.exports = require('./src/Cookie.js')
+module.exports = require('./src/assign.js')
+module.exports = require('./src/converter.js')
