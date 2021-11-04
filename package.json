@@ -2,14 +2,8 @@
   "name": "js-cookie",
   "version": "3.0.1",
   "description": "A simple, lightweight JavaScript API for handling cookies",
-  "browser": "dist/js.cookie.js",
-  "module": "dist/js.cookie.mjs",
-  "unpkg": "dist/js.cookie.min.js",
-  "jsdelivr": "dist/js.cookie.min.js",
   "exports": {
     ".": {
-      "import": "./dist/js.cookie.mjs",
-      "require": "./dist/js.cookie.js"
     },
     "./package.json": "./package.json"
   },
@@ -27,18 +21,14 @@
     "browserify"
   ],
   "scripts": {
-    "test": "grunt test",
-    "format": "grunt exec:format",
-    "dist": "rm -rf dist/* && rollup -c",
-    "release": "release-it"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/js-cookie/js-cookie.git"
+    "url": "git://github.com/wevote/js-cookie.git"
   },
   "files": [
     "index.js",
-    "dist/**/*"
+    "src/**/*"
   ],
   "author": "Klaus Hartl",
   "license": "MIT",
