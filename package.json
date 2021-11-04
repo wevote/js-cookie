@@ -1,13 +1,12 @@
 {
   "name": "js-cookie",
-  "version": "3.0.1",
+  "version": "3.0.1.1",
   "description": "A simple, lightweight JavaScript API for handling cookies",
-    "exports": {
-    ".": {
-    },
+  "exports": {
+    "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
- "directories": {
+  "directories": {
     "test": "test"
   },
   "keywords": [
